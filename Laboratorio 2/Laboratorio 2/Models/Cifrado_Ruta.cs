@@ -10,13 +10,14 @@ namespace Laboratorio_2.Models
     public class Cifrado_Ruta
     {
         private char[,] matriz;
-        private const int bufferlenght = 500;
+        private const int bufferlenght = 1500;
         private long tamaño_archivo { get; set; }
         public void Cifrado(int clave, string path_archivo, string path_escritura, int direccion)
         {
-            Crear_Matriz(clave, path_archivo, direccion,path_escritura);
+            Crear_Matriz(clave, path_archivo, direccion, path_escritura);
+
         }
-        private void Crear_Matriz(int clave, string path_archivo, int direccion,string path_escritura)
+        private void Crear_Matriz(int clave, string path_archivo, int direccion, string path_escritura)
         {
             int cantidad = 0;
             var buffer = new char[bufferlenght];
@@ -72,9 +73,9 @@ namespace Laboratorio_2.Models
 
 
                         }
-                        Escribir_Matriz(direccion, path_escritura);
                         buffer = new char[bufferlenght];
                         cantidad = 0;
+                        Escribir_Matriz(direccion, path_escritura);
                     }
 
                 }
@@ -120,14 +121,14 @@ namespace Laboratorio_2.Models
                             escritura[cantidad] = matriz[columnas_n - 1, i];
                             cantidad++;
                         }
-                        filas_n--;
+
                         columnas_n--;
                         for (int i = columnas_n - 1; i > columnas - 1; i--)
                         {
                             escritura[cantidad] = matriz[i, filas - 1];
                             cantidad++;
                         }
-
+                        filas_n--;
                     }
                 }
                 else
@@ -164,19 +165,19 @@ namespace Laboratorio_2.Models
                             cantidad++;
                         }
                         columnas_n--;
-                        filas_n--;
+
                         for (int i = filas_n - 1; i > filas - 1; i--)
                         {
                             escritura[cantidad] = matriz[columnas - 1, i];
                             cantidad++;
                         }
-                        filas--;
+                        filas_n--;
 
                     }
                 }
                 var escritor = Encoding.UTF8.GetBytes(escritura);
                 writer.Write(escritor, 0, escritor.Length);
-                escritura = new char[bufferlenght];
+                escritura = new char[bufferlength];
             }
         }
     }
