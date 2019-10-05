@@ -60,6 +60,10 @@ namespace Laboratorio_2.Models
                 }
 
             }
+            Tabla_Caracteres = new Dictionary<char, char>();
+            Creacion_clave = new List<char>();
+            Abecedario = new List<char>();
+
         }
 
         private void Crear_diccionario(string clave, string path_archivo)
