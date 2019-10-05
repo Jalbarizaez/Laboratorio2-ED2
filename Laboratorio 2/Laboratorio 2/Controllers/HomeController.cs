@@ -10,8 +10,6 @@ namespace Laboratorio_2.Controllers
 {
 	public class HomeController : Controller
 	{
-		string pathArchivo;
-
 		private void BorrarArchivosTemporales()
 		{
 			string pathABorrar = Server.MapPath("~/ArchivosTmp/");
@@ -24,7 +22,6 @@ namespace Laboratorio_2.Controllers
 		{
 			string pathCarpeta = Path.Combine(Server.MapPath("~/"), "Archivos");
 			Directory.CreateDirectory(pathCarpeta);
-			pathArchivo = pathCarpeta + "/Abecedario.txt";
 
 			string pathCarpeta2 = Path.Combine(Server.MapPath("~/"), "ArchivosTmp");
 			Directory.CreateDirectory(pathCarpeta2);
@@ -126,7 +123,10 @@ namespace Laboratorio_2.Controllers
 						path = path + ArchivoEntrada.FileName;
 						ArchivoEntrada.SaveAs(path);
 
-						H.Cifrar(pathArchivo, path, llave, pathPrueba);
+						string pathMiFichero = Server.MapPath("~/Archivos/");
+						pathMiFichero = pathMiFichero + "Abecedario.txt";
+
+						H.Cifrar(pathMiFichero, path, llave, pathPrueba);
 
 						ViewBag.Ok = "Proceso completado :)";
 						return File(pathPrueba, "cif", (nombreArchivo[0] + ".cif"));
@@ -139,7 +139,10 @@ namespace Laboratorio_2.Controllers
 						path = path + ArchivoEntrada.FileName;
 						ArchivoEntrada.SaveAs(path);
 
-						H.Descifrar(pathArchivo, path, llave, pathPrueba);
+						string pathMiFichero = Server.MapPath("~/Archivos/");
+						pathMiFichero = pathMiFichero + "Abecedario.txt";
+
+						H.Descifrar(pathMiFichero, path, llave, pathPrueba);
 
 						ViewBag.ok = "Proceso completado :)";
 						return File(pathPrueba, "txt", (nombreArchivo[0] + ".txt"));

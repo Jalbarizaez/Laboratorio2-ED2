@@ -117,6 +117,7 @@ namespace Laboratorio_2.Models
 			{
 				using (var writer = new BinaryWriter(file))
 				{
+					writer.Write(Convert.ToChar(separador));
 					foreach (var item in Filas)
 					{
 						foreach (var item2 in item)
@@ -138,7 +139,7 @@ namespace Laboratorio_2.Models
 			var buffer = new char[bufferLenght];
 			int cantCaracteres = 0;
 			char separador = '|';
-			int separadorN = 0;
+			bool primerCaracter = false;
 			using (var file = new FileStream(pathLectura, FileMode.Open))
 			{
 				using (var reader = new BinaryReader(file))
@@ -148,14 +149,13 @@ namespace Laboratorio_2.Models
 						buffer = reader.ReadChars(bufferLenght);
 						foreach (var item in buffer)
 						{
-							cantCaracteres++;
-							if (item == '|' && separadorN == 0)
+							if (primerCaracter == false)
 							{
-								separador = 'ÿ';
-								separador++;
+								separador = item;
+								primerCaracter = true;
 							}
-							if (item == 'ÿ' && separador == 1)
-								separador = 'ß';
+							else
+								cantCaracteres++;
 						}
 					}
 				}
@@ -164,6 +164,7 @@ namespace Laboratorio_2.Models
 			int fila = 0;
 			int m = CalculoDeM(clave, cantCaracteres);
 			int mIntermedio = 2 * (m - 1);
+			bool primerCaracter2 = false;
 			using (var file = new FileStream(pathLectura, FileMode.Open))
 			{
 				using (var reader = new BinaryReader(file))
@@ -173,7 +174,11 @@ namespace Laboratorio_2.Models
 						buffer = reader.ReadChars(bufferLenght);
 						foreach (var item in buffer)
 						{
-							if (clave != 1)
+							if (primerCaracter2 == false)
+							{
+								primerCaracter2 = true;
+							}
+							else if (clave != 1)
 							{
 								if (fila == 0)
 								{
