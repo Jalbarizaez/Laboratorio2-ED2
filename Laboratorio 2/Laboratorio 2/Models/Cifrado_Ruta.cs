@@ -177,7 +177,7 @@ namespace Laboratorio_2.Models
                 }
                 var escritor = Encoding.UTF8.GetBytes(escritura);
                 writer.Write(escritor, 0, escritor.Length);
-                escritura = new char[bufferlength];
+                escritura = new char[bufferlenght];
             }
         }
     }
