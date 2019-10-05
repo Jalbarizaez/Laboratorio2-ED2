@@ -9,13 +9,18 @@ namespace Laboratorio_2.Models
 {
     public class Cifrado_Cesar
     {
-        private static Dictionary<char, char> Tabla_Caracteres = new Dictionary<char, char>();
-        private List<char> Creacion_clave = new List<char>();
-        private List<char> Abecedario = new List<char>();
+		private static Dictionary<char, char> Tabla_Caracteres;
+		private List<char> Creacion_clave;
+		private List<char> Abecedario;
         private const int bufferlength = 750;
+
         public void Cifrar(string path_archivo, string path_texto, string clave, string path_Escritura)
         {
-            Crear_diccionario(clave, path_archivo);
+			Tabla_Caracteres = new Dictionary<char, char>();
+			Creacion_clave = new List<char>();
+			Abecedario = new List<char>();
+
+			Crear_diccionario(clave, path_archivo);
             Escribir_Cifrado(path_texto, path_Escritura);
         }
         private void Escribir_Cifrado(string path_texto, string path_Escritura)

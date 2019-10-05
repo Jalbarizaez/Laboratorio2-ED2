@@ -25,6 +25,7 @@ namespace Laboratorio_2.Controllers
 
 			string pathCarpeta2 = Path.Combine(Server.MapPath("~/"), "ArchivosTmp");
 			Directory.CreateDirectory(pathCarpeta2);
+
 			BorrarArchivosTemporales();
 
 			return View();
@@ -114,45 +115,47 @@ namespace Laboratorio_2.Controllers
 				string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
 				try
 				{
-					if (nombreArchivo[1] == "txt")
-					{
-						Cifrado_Cesar H = new Cifrado_Cesar();
-
-						string path = Server.MapPath("~/ArchivosTmp/");
-						string pathPrueba = path + nombreArchivo[0];
-						path = path + ArchivoEntrada.FileName;
-						ArchivoEntrada.SaveAs(path);
-
-						string pathMiFichero = Server.MapPath("~/Archivos/");
-						pathMiFichero = pathMiFichero + "Abecedario.txt";
-						//Error
-
-						H.Cifrar(pathMiFichero, path, llave, pathPrueba);
-
-						ViewBag.Ok = "Proceso completado :)";
-						return File(pathPrueba, "cif", (nombreArchivo[0] + ".cif"));
-					}
-					else if (nombreArchivo[1] == "cif")
-					{
-						Descifrado_Cesar H = new Descifrado_Cesar();
-						string path = Server.MapPath("~/ArchivosTmp/");
-						string pathPrueba = path + nombreArchivo[0];
-						path = path + ArchivoEntrada.FileName;
-						ArchivoEntrada.SaveAs(path);
-
-						string pathMiFichero = Server.MapPath("~/Archivos/");
-						pathMiFichero = pathMiFichero + "Abecedario.txt";
-
-						H.Descifrar(pathMiFichero, path, llave, pathPrueba);
-
-						ViewBag.ok = "Proceso completado :)";
-						return File(pathPrueba, "txt", (nombreArchivo[0] + ".txt"));
-					}
+					
 				}
 				catch
 				{
 					ViewBag.Error02 = "Ha ocurrido un error con su archivo";
 				}
+
+				if (nombreArchivo[1] == "txt")
+				{
+					Cifrado_Cesar H = new Cifrado_Cesar();
+
+					string path = Server.MapPath("~/ArchivosTmp/");
+					string pathPrueba = path + nombreArchivo[0];
+					path = path + ArchivoEntrada.FileName;
+					ArchivoEntrada.SaveAs(path);
+
+					string pathMiFichero = Server.MapPath("~/Archivos/");
+					pathMiFichero = pathMiFichero + "Abecedario.txt";
+
+					H.Cifrar(pathMiFichero, path, llave, pathPrueba);
+
+					ViewBag.Ok = "Proceso completado :)";
+					return File(pathPrueba, "cif", (nombreArchivo[0] + ".cif"));
+				}
+				else if (nombreArchivo[1] == "cif")
+				{
+					Descifrado_Cesar H = new Descifrado_Cesar();
+					string path = Server.MapPath("~/ArchivosTmp/");
+					string pathPrueba = path + nombreArchivo[0];
+					path = path + ArchivoEntrada.FileName;
+					ArchivoEntrada.SaveAs(path);
+
+					string pathMiFichero = Server.MapPath("~/Archivos/");
+					pathMiFichero = pathMiFichero + "Abecedario.txt";
+
+					H.Descifrar(pathMiFichero, path, llave, pathPrueba);
+
+					ViewBag.ok = "Proceso completado :)";
+					return File(pathPrueba, "txt", (nombreArchivo[0] + ".txt"));
+				}
+
 			}
 			else
 			{
