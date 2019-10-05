@@ -125,6 +125,7 @@ namespace Laboratorio_2.Controllers
 
 						string pathMiFichero = Server.MapPath("~/Archivos/");
 						pathMiFichero = pathMiFichero + "Abecedario.txt";
+						//Error
 
 						H.Cifrar(pathMiFichero, path, llave, pathPrueba);
 
