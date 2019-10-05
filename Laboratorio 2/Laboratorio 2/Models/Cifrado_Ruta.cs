@@ -12,6 +12,7 @@ namespace Laboratorio_2.Models
         private char[,] matriz;
         private const int bufferlenght = 1500;
         private long tamaño_archivo { get; set; }
+
         public void Cifrado(int clave, string path_archivo, string path_escritura, int direccion)
         {
             Crear_Matriz(clave, path_archivo, direccion, path_escritura);
