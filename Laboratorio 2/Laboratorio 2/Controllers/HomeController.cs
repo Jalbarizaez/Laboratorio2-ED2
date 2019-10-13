@@ -161,5 +161,81 @@ namespace Laboratorio_2.Controllers
 			return View();
 		}
 
+		[HttpGet]
+		public ActionResult SDES()
+		{
+			BorrarArchivosTemporales();
+			return View();
+		}
+		[HttpPost]
+		public ActionResult SDES(HttpPostedFileBase ArchivoEntrada, string llave)
+		{
+			BorrarArchivosTemporales();
+			bool LlaveValida = true;
+			foreach (char item in llave)
+			{
+				if (item != '0' || item != '1')
+					LlaveValida = false;
+			}
+			if (llave.Length != 10)
+				LlaveValida = false;
+
+			if (ArchivoEntrada != null && LlaveValida)
+			{
+				string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
+				try
+				{
+					if (nombreArchivo[1] == "txt")
+					{
+						SDES H = new SDES();
+
+						//string path = Server.MapPath("~/ArchivosTmp/");
+						//string pathPrueba = path + nombreArchivo[0];
+						//path = path + ArchivoEntrada.FileName;
+						//ArchivoEntrada.SaveAs(path);
+
+						//Este va a ser el camino para el archivo de las Permutaciones
+						//string pathMiFichero = Server.MapPath("~/Archivos/");
+						//pathMiFichero = pathMiFichero + "Abecedario.txt";
+
+						//Permutaciones, Lectura, llave, Escritura 
+						//H.Cifrar(pathMiFichero, path, llave, pathPrueba);
+
+						ViewBag.Ok = "Proceso completado :)";
+						//return File(pathPrueba, "scif", (nombreArchivo[0] + ".scif"));
+					}
+					else if (nombreArchivo[1] == "cif")
+					{
+						//Descifrado_Cesar H = new Descifrado_Cesar();
+						//string path = Server.MapPath("~/ArchivosTmp/");
+						//string pathPrueba = path + nombreArchivo[0];
+						//path = path + ArchivoEntrada.FileName;
+						//ArchivoEntrada.SaveAs(path);
+
+						//string pathMiFichero = Server.MapPath("~/Archivos/");
+						//pathMiFichero = pathMiFichero + "Abecedario.txt";
+
+						//Permutaciones, Lectura, llave, Escritura
+						//H.Descifrar(pathMiFichero, path, llave, pathPrueba);
+
+						ViewBag.ok = "Proceso completado :)";
+						//return File(pathPrueba, "txt", (nombreArchivo[0] + ".txt"));
+					}
+				}
+				catch
+				{
+					ViewBag.Error = "Ha ocurrido un error con su archivo";
+				}
+			}
+			else
+			{
+				if (ArchivoEntrada == null)
+					ViewBag.Error = "No ha ingresado un archivo";
+				if (LlaveValida == false)
+					ViewBag.Error = "Debe ingresar una llave con solo caracteres '1' o '0'.  Su llave debe poseer 10 caracteres";
+			}
+			return View();
+		}
+
 	}
 }

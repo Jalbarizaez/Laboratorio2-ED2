@@ -177,6 +177,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\ZigZag.cshtml" />
     <Content Include="Views\Home\Cesar.cshtml" />
+    <Content Include="Views\Home\SDES.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

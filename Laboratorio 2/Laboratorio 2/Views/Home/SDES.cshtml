@@ -1,0 +1,22 @@
+﻿
+@{
+	ViewBag.Title = "SDES";
+}
+
+<h2>SDES</h2>
+
+<br />
+<h1>Cargue su archivo</h1>
+<br />
+<h2 class="danger">@ViewBag.Error</h2>
+<h2 class="success">@ViewBag.Ok</h2>
+<br />
+<form method="post" enctype="multipart/form-data">
+	<input type="file" name="ArchivoEntrada" />
+	<br />
+	<h4>Ingrese Llave</h4>
+	<h6>Ejemplo de llave 1110011100</h6>
+	<input type="text" name="llave" />
+	<br />
+	<button type="submit">Iniciar</button>
+</form>
