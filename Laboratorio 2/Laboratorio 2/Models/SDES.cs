@@ -8,65 +8,76 @@ namespace Laboratorio_2.Models
 {
 	public class SDES
 	{
-		private List<int> ip = new List<int>();
-		private List<int> ip_1 = new List<int>();
-		private List<int> ep = new List<int>();
-		private List<int> p10 = new List<int>();
-		private List<int> p8 = new List<int>();
-		private List<int> p4 = new List<int>();
-		private List<int> ls1 = new List<int>();
-		private List<int> ls2 = new List<int>();
-		private string[][] S0 = new string[4][];
+        private const int bufferLenght = 1000;
+        private int[] ip = new int[8];
+        private int[] ip_1 = new int[8];
+        private int[] ep = new int[8];
+        private int[] p10 = new int[10];
+        private int[] p8 = new int[8];
+        private int[] p4 = new int[4];
+        private string[][] S0 = new string[4][];
 		private string[][] S1 = new string[4][];
 
         private void Read_Permutations(string path)
         {
-
-			string[] lines = File.ReadAllLines(path);
+            string[] lines = File.ReadAllLines(path);
             for (int i = 0; i < lines.Length; i++)
             {
                 string[] line_split = lines[i].Split(':');
                 string[] order = line_split[1].Split(',');
                 if (i == 0)
                 {
+                    int count = 0;
                     foreach (var item in order)
                     {
-                        p10.Add(Convert.ToInt16(item));
+                        p10[count] = (Convert.ToInt16(item));
+                        count++;
                     }
                 }
                 if (i == 1)
                 {
+                    int count = 0;
                     foreach (var item in order)
                     {
-                        p8.Add(Convert.ToInt16(item));
+                        p8[count] = (Convert.ToInt16(item));
+                        count++;
                     }
                 }
                 if (i == 2)
                 {
+                    int count = 0;
                     foreach (var item in order)
                     {
-                        p4.Add(Convert.ToInt16(item));
+                        p4[count] = (Convert.ToInt16(item));
+                        count++;
                     }
                 }
                 if (i == 3)
                 {
+                    int count = 0;
                     foreach (var item in order)
                     {
-                        ep.Add(Convert.ToInt16(item));
+                        ep[count] = (Convert.ToInt16(item));
+                        count++;
                     }
                 }
                 if (i == 4)
                 {
+                    int count = 0;
                     foreach (var item in order)
                     {
-                        ip.Add(Convert.ToInt16(item));
+                        ip[count] = (Convert.ToInt16(item));
+                        count++;
                     }
                 }
                 if (i == 5)
                 {
+                    int count = 0;
                     foreach (var item in order)
                     {
-                        ip_1.Add(Convert.ToInt16(item));
+
+                        ip_1[count] = (Convert.ToInt16(item));
+                        count++;
                     }
                 }
             }
