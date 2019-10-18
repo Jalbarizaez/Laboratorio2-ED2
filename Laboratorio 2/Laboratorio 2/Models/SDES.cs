@@ -95,6 +95,7 @@ namespace Laboratorio_2.Models
             keys[1] = last_permutation;
             return keys;
         }
+
         private byte CIF(byte item, string k1, string k2)
         {
             var bits = Convert.ToString(item, 2);
@@ -112,11 +113,7 @@ namespace Laboratorio_2.Models
             var final = IP_1(six_permutation);
             return Convert.ToByte((final[0] + final[1]), 2);
         }
-            public void Cifrado(string bits, string path_read, string path_write)
-        {
-            Read_Permutations(path_read);
-            string[] keys = Keys(bits);
-        }
+
         private string EP(string bits)
         {
             var bit = bits.ToCharArray();
@@ -127,18 +124,21 @@ namespace Laboratorio_2.Models
             }
             return final;
         }
+
         public void Cifrado(string bits, string path_read_S, string path_write, string path_read)
         {
             Read_Permutations(path_read_S);
             string[] keys = Keys(bits);
             Write_bytes(keys[0], keys[1], path_read, path_write);
         }
+
         public void Descifrado(string bits, string path_read_S, string path_write, string path_read)
         {
             Read_Permutations(path_read_S);
             string[] keys = Keys(bits);
             Write_bytes(keys[1], keys[0], path_read, path_write);
         }
+
         private void Write_bytes(string k1, string k2, string path_read, string path_write)
         {
             int count = 0;
@@ -159,7 +159,6 @@ namespace Laboratorio_2.Models
                                 {
                                     write[count] = CIF(item, k1, k2);
                                     count++;
-
                                 }
                                 writer.Write(write, 0, count);
                                 count = 0;
@@ -171,6 +170,7 @@ namespace Laboratorio_2.Models
                 }
             }
         }
+
         private string[] IP_1(string bits)
         {
             var bit = bits.ToCharArray();
@@ -190,6 +190,7 @@ namespace Laboratorio_2.Models
             }
             return final;
         }
+
         private string[] IP(string bits)
         {
             var bit = bits.ToCharArray();
@@ -209,6 +210,7 @@ namespace Laboratorio_2.Models
             }
             return final;
         }
+
         private string P4(string bits)
         {
             var bit = bits.ToCharArray();
@@ -219,6 +221,7 @@ namespace Laboratorio_2.Models
             }
             return final;
         }
+
         private string XOR(string bits1, string bits2)
         {
             var bit1 = bits1.ToCharArray();

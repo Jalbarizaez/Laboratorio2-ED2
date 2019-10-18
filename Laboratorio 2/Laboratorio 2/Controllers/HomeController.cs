@@ -174,7 +174,7 @@ namespace Laboratorio_2.Controllers
 			bool LlaveValida = true;
 			foreach (char item in llave)
 			{
-				if (item != '0' || item != '1')
+				if (item != '0' && item != '1')
 					LlaveValida = false;
 			}
 			if (llave.Length != 10)
@@ -189,37 +189,35 @@ namespace Laboratorio_2.Controllers
 					{
 						SDES H = new SDES();
 
-						//string path = Server.MapPath("~/ArchivosTmp/");
-						//string pathPrueba = path + nombreArchivo[0];
-						//path = path + ArchivoEntrada.FileName;
-						//ArchivoEntrada.SaveAs(path);
+						string path = Server.MapPath("~/ArchivosTmp/");
+						string pathPrueba = path + nombreArchivo[0];
+						path = path + ArchivoEntrada.FileName;
+						ArchivoEntrada.SaveAs(path);
 
-						//Este va a ser el camino para el archivo de las Permutaciones
-						//string pathMiFichero = Server.MapPath("~/Archivos/");
-						//pathMiFichero = pathMiFichero + "Abecedario.txt";
+						string pathMiFichero = Server.MapPath("~/Archivos/");
+						pathMiFichero = pathMiFichero + "S-DES.txt";
 
-						//Permutaciones, Lectura, llave, Escritura 
-						//H.Cifrar(pathMiFichero, path, llave, pathPrueba);
+						H.Cifrado(llave,pathMiFichero, pathPrueba, path);
 
 						ViewBag.Ok = "Proceso completado :)";
-						//return File(pathPrueba, "scif", (nombreArchivo[0] + ".scif"));
+						return File(pathPrueba, "scif", (nombreArchivo[0] + ".scif"));
 					}
-					else if (nombreArchivo[1] == "cif")
+					else if (nombreArchivo[1] == "scif")
 					{
-						//Descifrado_Cesar H = new Descifrado_Cesar();
-						//string path = Server.MapPath("~/ArchivosTmp/");
-						//string pathPrueba = path + nombreArchivo[0];
-						//path = path + ArchivoEntrada.FileName;
-						//ArchivoEntrada.SaveAs(path);
+						SDES H = new SDES();
 
-						//string pathMiFichero = Server.MapPath("~/Archivos/");
-						//pathMiFichero = pathMiFichero + "Abecedario.txt";
+						string path = Server.MapPath("~/ArchivosTmp/");
+						string pathPrueba = path + nombreArchivo[0];
+						path = path + ArchivoEntrada.FileName;
+						ArchivoEntrada.SaveAs(path);
 
-						//Permutaciones, Lectura, llave, Escritura
-						//H.Descifrar(pathMiFichero, path, llave, pathPrueba);
+						string pathMiFichero = Server.MapPath("~/Archivos/");
+						pathMiFichero = pathMiFichero + "S-DES.txt";
+
+						H.Descifrado(llave, pathMiFichero, pathPrueba, path);
 
 						ViewBag.ok = "Proceso completado :)";
-						//return File(pathPrueba, "txt", (nombreArchivo[0] + ".txt"));
+						return File(pathPrueba, "txt", (nombreArchivo[0] + ".txt"));
 					}
 				}
 				catch
