@@ -95,11 +95,103 @@ namespace Laboratorio_2.Models
             keys[1] = last_permutation;
             return keys;
         }
-
-        public void Cifrado(string bits, string path_read, string path_write)
+        private byte CIF(byte item, string k1, string k2)
+        {
+            var bits = Convert.ToString(item, 2);
+            var byte_ = bits.PadLeft(8, '0');
+            var first_permutation = IP(byte_);
+            var second_permutation = EP(first_permutation[1]);
+            var xor = XOR(k1, second_permutation);
+            var third_permutation = SBox(xor);
+            var xor2 = XOR(P4(third_permutation), first_permutation[0]);
+            var four_permutation = EP(xor2);
+            var xor3 = XOR(k2, four_permutation);
+            var five_permutation = SBox(xor3);
+            var xor4 = XOR(P4(five_permutation), first_permutation[1]);
+            var six_permutation = xor4 + xor2;
+            var final = IP_1(six_permutation);
+            return Convert.ToByte((final[0] + final[1]), 2);
+        }
+            public void Cifrado(string bits, string path_read, string path_write)
         {
             Read_Permutations(path_read);
             string[] keys = Keys(bits);
+        }
+        private string EP(string bits)
+        {
+            var bit = bits.ToCharArray();
+            string final = "";
+            foreach (var item in ep)
+            {
+                final += bits[item];
+            }
+            return final;
+        }
+        private string[] IP_1(string bits)
+        {
+            var bit = bits.ToCharArray();
+            string[] final = new string[2];
+            int count = 0;
+            foreach (var item in ip_1)
+            {
+                if (count < 4)
+                {
+                    final[0] += bits[item];
+                    count++;
+                }
+                else
+                {
+                    final[1] += bits[item];
+                }
+            }
+            return final;
+        }
+        private string[] IP(string bits)
+        {
+            var bit = bits.ToCharArray();
+            string[] final = new string[2];
+            int count = 0;
+            foreach (var item in ip)
+            {
+                if (count < 4)
+                {
+                    final[0] += bits[item];
+                    count++;
+                }
+                else
+                {
+                    final[1] += bits[item];
+                }
+            }
+            return final;
+        }
+        private string P4(string bits)
+        {
+            var bit = bits.ToCharArray();
+            string final = "";
+            foreach (var item in p4)
+            {
+                final += bits[item];
+            }
+            return final;
+        }
+        private string XOR(string bits1, string bits2)
+        {
+            var bit1 = bits1.ToCharArray();
+            var bit2 = bits2.ToCharArray();
+            string final = "";
+            for (int i = 0; i < bit1.Length; i++)
+            {
+                if (bit1[i] == bit2[i])
+                {
+                    final += "0";
+                }
+                else
+                {
+                    final += "1";
+                }
+            }
+            return final;
         }
 
         private string P10(string bits)
