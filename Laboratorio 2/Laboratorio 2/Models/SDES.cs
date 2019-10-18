@@ -127,6 +127,50 @@ namespace Laboratorio_2.Models
             }
             return final;
         }
+        public void Cifrado(string bits, string path_read_S, string path_write, string path_read)
+        {
+            Read_Permutations(path_read_S);
+            string[] keys = Keys(bits);
+            Write_bytes(keys[0], keys[1], path_read, path_write);
+        }
+        public void Descifrado(string bits, string path_read_S, string path_write, string path_read)
+        {
+            Read_Permutations(path_read_S);
+            string[] keys = Keys(bits);
+            Write_bytes(keys[1], keys[0], path_read, path_write);
+        }
+        private void Write_bytes(string k1, string k2, string path_read, string path_write)
+        {
+            int count = 0;
+            var write = new byte[bufferLenght];
+            var buffer = new byte[bufferLenght];
+            using (var File = new FileStream(path_write, FileMode.OpenOrCreate))
+            {
+                using (var writer = new BinaryWriter(File))
+                {
+                    using (var file = new FileStream(path_read, FileMode.Open))
+                    {
+                        using (var reader = new BinaryReader(file, System.Text.Encoding.ASCII))
+                        {
+                            while (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                buffer = reader.ReadBytes(bufferLenght);
+                                foreach (var item in buffer)
+                                {
+                                    write[count] = CIF(item, k1, k2);
+                                    count++;
+
+                                }
+                                writer.Write(write, 0, count);
+                                count = 0;
+                                write = new byte[bufferLenght];
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
         private string[] IP_1(string bits)
         {
             var bit = bits.ToCharArray();
