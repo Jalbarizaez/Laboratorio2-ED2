@@ -7,11 +7,94 @@ namespace Laboratorio_2.Models
 {
 	public class RSA
 	{
-		//Para llamarla solo tenes que enviarle Fi(n) y e.  Ejemplo:
-		//Fi(n) = 20      e = 7
-		//InversoMultiplicativoMod(20, 7)
-		//eso da de resultado "d"
-		private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
+        private int E_(int fi, int n)
+        {
+            List<int> FI = new List<int>();
+            int residuo_fi = fi;
+            for (int i = 2; i <= residuo_fi; i++)
+            {
+                if (residuo_fi % i == 0)
+                {
+                    bool agregar = true;
+                    foreach (var item in FI)
+                    {
+                        if (i % item == 0)
+                        {
+                            agregar = false;
+                            break;
+                        }
+                    }
+                    if (agregar)
+                    {
+                        FI.Add(i);
+                        residuo_fi = fi / i;
+                    }
+                }
+            }
+            List<int> N = new List<int>();
+            int residuo_N = n;
+            for (int i = 2; i <= residuo_N; i++)
+            {
+                if (residuo_N % i == 0)
+                {
+                    bool agregar = true;
+                    foreach (var item in N)
+                    {
+                        if (i % item == 0)
+                        {
+                            agregar = false;
+                            break;
+                        }
+                    }
+                    if (agregar)
+                    {
+                        N.Add(i);
+                        residuo_N = n / i;
+                    }
+                }
+            }
+            bool comparar_fi = true;
+            bool comparar_n = true;
+            int numero_e = 2;
+            while (comparar_fi && comparar_n)
+            {
+                foreach (var item in N)
+                {
+                    if (numero_e % item == 0)
+                    {
+                        comparar_n = false;
+                        break;
+                    }
+                }
+                foreach (var item in FI)
+                {
+                    if (numero_e % item == 0)
+                    {
+                        comparar_fi = false;
+                        break;
+                    }
+                }
+                if (comparar_fi == false || comparar_n == false)
+                {
+                    numero_e++;
+                    comparar_fi = true;
+                    comparar_n = true;
+                }
+                else if (comparar_fi == true && comparar_n == true)
+                {
+                    comparar_fi = false;
+                    comparar_n = false;
+                }
+            }
+
+
+            return numero_e;
+        }
+        //Para llamarla solo tenes que enviarle Fi(n) y e.  Ejemplo:
+        //Fi(n) = 20      e = 7
+        //InversoMultiplicativoMod(20, 7)
+        //eso da de resultado "d"
+        private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
 		{
 			if (e2 == 1)
 				return num2;
