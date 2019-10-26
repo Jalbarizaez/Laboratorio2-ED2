@@ -7,6 +7,29 @@ namespace Laboratorio_2.Models
 {
 	public class RSA
 	{
+        public void Llaves(int p, int q, string pathEscritura_Privada, string pathEscritura_Publica)
+        {
+            int n = p * q;
+            int phi = (p - 1) * (q - 1);
+            int e = E_(phi, n);
+            int d = InversoMultiplicativoMod(phi, e);
+            using (var file = new FileStream(pathEscritura_Privada, FileMode.OpenOrCreate))
+            {
+                using (var writer = new BinaryWriter(file))
+                {
+                    var Escritura = Encoding.UTF8.GetBytes((d.ToString() + "," + n.ToString()).ToArray());
+                    writer.Write(Escritura);
+                }
+            }
+            using (var file = new FileStream(pathEscritura_Publica, FileMode.OpenOrCreate))
+            {
+                using (var writer = new BinaryWriter(file))
+                {
+                    var Escritura = Encoding.UTF8.GetBytes((e.ToString() + "," + n.ToString()).ToArray());
+                    writer.Write(Escritura);
+                }
+            }
+        }
         private int E_(int fi, int n)
         {
             List<int> FI = new List<int>();
