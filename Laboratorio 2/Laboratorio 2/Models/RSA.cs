@@ -7,6 +7,31 @@ namespace Laboratorio_2.Models
 {
 	public class RSA
 	{
+        private void CIF(string pathEscritura, string pathLlave, string pathLectura)
+        {
+            string lines = File.ReadAllText(pathLlave);
+            var llave = lines.Split(',');
+            var buffer = new byte[bufferlenght];
+            using (var File = new FileStream(pathEscritura, FileMode.OpenOrCreate))
+            {
+                using (var writer = new BinaryWriter(File))
+                {
+                    using (var file = new FileStream(pathLectura, FileMode.Open))
+                    {
+                        using (var reader = new BinaryReader(file, System.Text.Encoding.ASCII))
+                        {
+                            while (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                buffer = reader.ReadBytes(bufferlenght);
+                                var escribir = Ecuacion(buffer, Convert.ToInt32(llave[0]), Convert.ToInt32(llave[1]));
+                                writer.Write(escribir.ToArray(), 0, escribir.Count);
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
         public void Llaves(int p, int q, string pathEscritura_Privada, string pathEscritura_Publica)
         {
             int n = p * q;
