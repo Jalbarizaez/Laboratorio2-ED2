@@ -1,0 +1,33 @@
+﻿@model List<string>
+@{
+	ViewBag.Title = "LLavesRSA";
+}
+
+<h2>LLaves RSA</h2>
+<br />
+<h2 class="danger">@ViewBag.Error</h2>
+<h2 class="success">@ViewBag.Ok</h2>
+<br />
+<div class="row">
+
+	<div class="col-md-4">
+		<form method="post" enctype="multipart/form-data">
+			<h2>Ingrese 'P'</h2>
+			<input type="number" name="P" />
+			<br />
+			<h2>Ingrese 'Q'</h2>
+			<input type="number" name="Q" />
+			<br />
+			<button type="submit">Iniciar</button>
+		</form>
+	</div>
+	@if (Model != null)
+	{
+		<div class="col-md-4">
+			<h3>@Html.ActionLink("Descargar Llave Privada", "DescargarLlavesRSA", "Home", new { Path = Model[0] }, null);</h3>
+		</div>
+		<div class="col-md-4">
+			<h3>@Html.ActionLink("Descargar Llave Publica", "DescargarLlavesRSA", "Home", new { Path = Model[1] }, null);</h3>
+		</div>
+	}
+</div>

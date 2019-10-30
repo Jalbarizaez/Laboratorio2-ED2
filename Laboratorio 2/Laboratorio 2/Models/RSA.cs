@@ -1,38 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
 using System.Web;
 
 namespace Laboratorio_2.Models
 {
 	public class RSA
 	{
-        private void CIF(string pathEscritura, string pathLlave, string pathLectura)
-        {
-            string lines = File.ReadAllText(pathLlave);
-            var llave = lines.Split(',');
-            var buffer = new byte[bufferlenght];
-            using (var File = new FileStream(pathEscritura, FileMode.OpenOrCreate))
-            {
-                using (var writer = new BinaryWriter(File))
-                {
-                    using (var file = new FileStream(pathLectura, FileMode.Open))
-                    {
-                        using (var reader = new BinaryReader(file, System.Text.Encoding.ASCII))
-                        {
-                            while (reader.BaseStream.Position != reader.BaseStream.Length)
-                            {
-                                buffer = reader.ReadBytes(bufferlenght);
-                                var escribir = Ecuacion(buffer, Convert.ToInt32(llave[0]), Convert.ToInt32(llave[1]));
-                                writer.Write(escribir.ToArray(), 0, escribir.Count);
-                            }
-                        }
+		private void CIF(string pathEscritura, string pathLlave, string pathLectura)
+		{
+			string lines = File.ReadAllText(pathLlave);
+			var llave = lines.Split(',');
+			var buffer = new byte[bufferlenght];
+			using (var File = new FileStream(pathEscritura, FileMode.OpenOrCreate))
+			{
+				using (var writer = new BinaryWriter(File))
+				{
+					using (var file = new FileStream(pathLectura, FileMode.Open))
+					{
+						using (var reader = new BinaryReader(file, System.Text.Encoding.ASCII))
+						{
+							while (reader.BaseStream.Position != reader.BaseStream.Length)
+							{
+								buffer = reader.ReadBytes(bufferlenght);
+								var escribir = Ecuacion(buffer, Convert.ToInt32(llave[0]), Convert.ToInt32(llave[1]));
+								writer.Write(escribir.ToArray(), 0, escribir.Count);
+							}
+						}
 
-                    }
-                }
-            }
-        }
-        public void Llaves(int p, int q, string pathEscritura_Privada, string pathEscritura_Publica)
+					}
+				}
+			}
+		}
+
+		public void Llaves(int p, int q, string pathEscritura_Privada, string pathEscritura_Publica)
         {
             int n = p * q;
             int phi = (p - 1) * (q - 1);
@@ -55,6 +59,7 @@ namespace Laboratorio_2.Models
                 }
             }
         }
+
         private int E_(int fi, int n)
         {
             List<int> FI = new List<int>();
@@ -134,14 +139,9 @@ namespace Laboratorio_2.Models
                     comparar_n = false;
                 }
             }
-
-
             return numero_e;
         }
-        //Para llamarla solo tenes que enviarle Fi(n) y e.  Ejemplo:
-        //Fi(n) = 20      e = 7
-        //InversoMultiplicativoMod(20, 7)
-        //eso da de resultado "d"
+       
         private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
 		{
 			if (e2 == 1)
@@ -169,5 +169,6 @@ namespace Laboratorio_2.Models
 				return InversoMultiplicativoMod(Fi, e, e2, num, num2);
 			}
 		}
+		
 	}
 }

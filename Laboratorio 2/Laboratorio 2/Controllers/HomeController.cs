@@ -10,10 +10,10 @@ namespace Laboratorio_2.Controllers
 {
 	public class HomeController : Controller
 	{
-		private void BorrarArchivosTemporales()
+		private void BorrarArchivosDeCarpeta(string pathCarpeta)
 		{
-			string pathABorrar = Server.MapPath("~/ArchivosTmp/");
-			string[] pathsTmp = Directory.GetFiles(pathABorrar);
+			//string pathABorrar = Server.MapPath("~/ArchivosTmp/");
+			string[] pathsTmp = Directory.GetFiles(pathCarpeta);
 			foreach (var item in pathsTmp)
 				System.IO.File.Delete(item);
 		}
@@ -26,7 +26,10 @@ namespace Laboratorio_2.Controllers
 			string pathCarpeta2 = Path.Combine(Server.MapPath("~/"), "ArchivosTmp");
 			Directory.CreateDirectory(pathCarpeta2);
 
-			BorrarArchivosTemporales();
+			string pathCarpeta3 = Path.Combine(Server.MapPath("~/"), "LlavesRSA");
+			Directory.CreateDirectory(pathCarpeta3);
+
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
 
 			return View();
 		}
@@ -48,14 +51,14 @@ namespace Laboratorio_2.Controllers
 		[HttpGet]
 		public ActionResult ZigZag()
 		{
-			BorrarArchivosTemporales();
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
 			return View();
 		}
 		[HttpPost]
 		public ActionResult ZigZag(HttpPostedFileBase ArchivoEntrada, int clave)
 		{
-			BorrarArchivosTemporales();
-			if (ArchivoEntrada != null)
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
+			if (ArchivoEntrada != null && clave > 0)
 			{
 				string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
 				try
@@ -103,13 +106,13 @@ namespace Laboratorio_2.Controllers
 		[HttpGet]
 		public ActionResult Cesar()
 		{
-			BorrarArchivosTemporales();
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
 			return View();
 		}
 		[HttpPost]
 		public ActionResult Cesar(HttpPostedFileBase ArchivoEntrada, string llave)
 		{
-			BorrarArchivosTemporales();
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
 			if (ArchivoEntrada != null)
 			{
 				string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
@@ -164,13 +167,13 @@ namespace Laboratorio_2.Controllers
 		[HttpGet]
 		public ActionResult SDES()
 		{
-			BorrarArchivosTemporales();
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
 			return View();
 		}
 		[HttpPost]
 		public ActionResult SDES(HttpPostedFileBase ArchivoEntrada, string llave)
 		{
-			BorrarArchivosTemporales();
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
 			bool LlaveValida = true;
 			foreach (char item in llave)
 			{
@@ -235,5 +238,111 @@ namespace Laboratorio_2.Controllers
 			return View();
 		}
 
+		[HttpGet]
+		public ActionResult RSA()
+		{
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
+			return View();
+		}
+		[HttpPost]
+		public ActionResult RSA(HttpPostedFileBase ArchivoEntrada, HttpPostedFileBase ArchivoLlave)
+		{
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
+			if (ArchivoEntrada != null && ArchivoLlave != null)
+			{
+				string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
+				try
+				{
+					if (nombreArchivo[1] == "txt")
+					{
+						RSA H = new RSA();
+						
+						string path = Server.MapPath("~/ArchivosTmp/");
+						string pathRetorno = path + nombreArchivo[0];
+						path = path + ArchivoEntrada.FileName;
+						ArchivoEntrada.SaveAs(path);
+
+						string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+
+						ViewBag.Ok = "Proceso completado :)";
+						return File(pathRetorno, "rsacif", (nombreArchivo[0] + ".rsacif"));
+					}
+					else if (nombreArchivo[1] == "rsacif")
+					{
+						RSA H = new RSA();
+
+						string path = Server.MapPath("~/ArchivosTmp/");
+						string pathRetorno = path + nombreArchivo[0];
+						path = path + ArchivoEntrada.FileName;
+						ArchivoEntrada.SaveAs(path);
+
+						string pathLave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+
+						ViewBag.ok = "Proceso completado :)";
+						return File(pathRetorno, "txt", (nombreArchivo[0] + ".txt"));
+					}
+				}
+				catch
+				{
+					ViewBag.Error = "Ha ocurrido un error con su archivo";
+				}
+			}
+			else
+			{
+				if (ArchivoEntrada == null)
+					ViewBag.Error = "No ha ingresado un archivo";
+				if (ArchivoLlave == null)
+					ViewBag.Error = "Debe ingresar un documento con la llave";
+			}
+			return View();
+		}
+		[HttpGet]
+		public ActionResult LLavesRSA()
+		{
+			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
+			return View();
+		}
+		[HttpPost]
+		public ActionResult LlavesRSA(int P, int Q)
+		{
+			try
+			{
+				if (P > 0 && Q > 0)
+				{
+					BorrarArchivosDeCarpeta(Server.MapPath("~/LlavesRSA/"));
+					string pathLlavePublica = Server.MapPath("~/LlavesRSA/") + "Public";
+					string pathLlavePrivada = Server.MapPath("~/LlavesRSA/") + "Private";
+					List<string> Llaves = new List<string>();
+					Llaves.Add(pathLlavePrivada);
+					Llaves.Add(pathLlavePublica);
+
+					RSA H = new RSA();
+					H.Llaves(P, Q, pathLlavePrivada, pathLlavePublica);
+					ViewBag.Ok = "Puede Proceder a descargar las llaves";
+					return View(Llaves);
+				}
+				else
+				{
+					ViewBag.Error = "Lo valores de 'P' y 'Q' no pueden ser menores o iguales a 0";
+					return View();
+				}
+			}
+			catch
+			{
+				ViewBag.Error = "Debe ingresar los valores de 'P' y 'Q'";
+				return View();
+			}
+		}
+		//ActionLink
+		public ActionResult DescargarLlavesRSA(string Path)
+		{
+			string TipoLlave = "";
+			if (Path.Substring((Path.Length - 7), 7) == "Private")
+				TipoLlave = "Private.Key";
+			if (Path.Substring((Path.Length - 6), 6) == "Public")
+				TipoLlave = "Public.Key";
+
+			return File(Path, "Key", TipoLlave);
+		}
 	}
 }

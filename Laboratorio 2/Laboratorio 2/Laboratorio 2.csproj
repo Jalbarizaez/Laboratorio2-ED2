@@ -180,6 +180,9 @@
     <Content Include="Views\Home\ZigZag.cshtml" />
     <Content Include="Views\Home\Cesar.cshtml" />
     <Content Include="Views\Home\SDES.cshtml" />
+    <Content Include="Views\Home\RSA.cshtml" />
+    <Content Include="Views\Home\LLavesRSA.cshtml" />
+    <Content Include="Views\Home\DescargarLlavesRSA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
