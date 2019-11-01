@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.IO;
 using System.Numerics;
+using System.Web;
 using System.Text;
 
-namespace RSA_dll
+namespace Laboratorio_2.Models
 {
-    public class RSA
-    {
+	public class RSA
+	{
+		//e Fi
 		private static int bufferlenght = 1000;
 
-		public int E_(int fi, int n)
+		private int E_(int fi, int n)
 		{
 			List<int> FI = new List<int>();
 			int residuo_fi = fi;
@@ -95,26 +97,16 @@ namespace RSA_dll
 			return numero_e;
 		}
 
-		//int modInverse(int e, int phi)
-		//{
-		//    int i = phi, v = 0, d = 1;
-		//    while (e > 0)
-		//    {
-		//        int t = i / e, x = e;
-		//        e = i % x;
-		//        i = x;
-		//        x = d;
-		//        d = v - t * x;
-		//        v = x;
-		//    }
-		//    v %= phi;
-		//    if (v < 0) v = (v + phi) % phi;
-		//    return v;
-		//}
-		public int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
+		private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
 		{
 			if (e2 == 1)
+			{
+				while (num2 < 0)
+				{
+					num2 = Fi + num2;
+				}
 				return num2;
+			}
 			else
 			{
 				if (e2 == 0)
@@ -139,7 +131,7 @@ namespace RSA_dll
 			}
 		}
 
-		private void DCIF(string pathEscritura, string pathLlave, string pathLectura)
+		public void DCIF(string pathEscritura, string pathLlave, string pathLectura)
 		{
 			string lines = File.ReadAllText(pathLlave);
 			var llave = lines.Split(',');
@@ -199,7 +191,7 @@ namespace RSA_dll
 			}
 		}
 
-		private void CIF(string pathEscritura, string pathLlave, string pathLectura)
+		public void CIF(string pathEscritura, string pathLlave, string pathLectura)
 		{
 			string lines = File.ReadAllText(pathLlave);
 			var llave = lines.Split(',');
@@ -247,7 +239,6 @@ namespace RSA_dll
 			int phi = (p - 1) * (q - 1);
 			int e = E_(phi, n);
 			int d = InversoMultiplicativoMod(phi, e);
-			//int d = modInverse(e, phi);
 			using (var file = new FileStream(pathEscritura_Privada, FileMode.OpenOrCreate))
 			{
 				using (var writer = new BinaryWriter(file))

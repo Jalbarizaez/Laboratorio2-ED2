@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using Laboratorio_2.Models;
-using RSABiblioteca;
 
 namespace Laboratorio_2.Controllers
 {

@@ -49,6 +49,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -134,6 +136,7 @@
     <Compile Include="Models\Cifrado_Ruta.cs" />
     <Compile Include="Models\Descifrado_Cesar.cs" />
     <Compile Include="Models\Descifrado_ruta.cs" />
+    <Compile Include="Models\RSA.cs" />
     <Compile Include="Models\SDES.cs" />
     <Compile Include="Models\ZigZag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -198,12 +201,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Intento1\RSABiblioteca.csproj">
-      <Project>{4b25ceef-c9db-4ae1-82ea-3debb937550d}</Project>
-      <Name>RSABiblioteca</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
