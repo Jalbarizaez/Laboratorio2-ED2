@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using Laboratorio_2.Models;
+using RSABiblioteca;
 
 namespace Laboratorio_2.Controllers
 {
@@ -12,7 +13,6 @@ namespace Laboratorio_2.Controllers
 	{
 		private void BorrarArchivosDeCarpeta(string pathCarpeta)
 		{
-			//string pathABorrar = Server.MapPath("~/ArchivosTmp/");
 			string[] pathsTmp = Directory.GetFiles(pathCarpeta);
 			foreach (var item in pathsTmp)
 				System.IO.File.Delete(item);
@@ -256,13 +256,13 @@ namespace Laboratorio_2.Controllers
 					if (nombreArchivo[1] == "txt")
 					{
 						RSA H = new RSA();
-						
 						string path = Server.MapPath("~/ArchivosTmp/");
 						string pathRetorno = path + nombreArchivo[0];
 						path = path + ArchivoEntrada.FileName;
 						ArchivoEntrada.SaveAs(path);
-
 						string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+
+						H.CIF(path, pathLlave, pathRetorno);
 
 						ViewBag.Ok = "Proceso completado :)";
 						return File(pathRetorno, "rsacif", (nombreArchivo[0] + ".rsacif"));
@@ -275,8 +275,9 @@ namespace Laboratorio_2.Controllers
 						string pathRetorno = path + nombreArchivo[0];
 						path = path + ArchivoEntrada.FileName;
 						ArchivoEntrada.SaveAs(path);
-
 						string pathLave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+
+						H.DCIF(path, pathLave, pathRetorno);
 
 						ViewBag.ok = "Proceso completado :)";
 						return File(pathRetorno, "txt", (nombreArchivo[0] + ".txt"));
@@ -307,7 +308,7 @@ namespace Laboratorio_2.Controllers
 		{
 			try
 			{
-				if (P > 0 && Q > 0)
+				if (P > 1 && Q > 1)
 				{
 					BorrarArchivosDeCarpeta(Server.MapPath("~/LlavesRSA/"));
 					string pathLlavePublica = Server.MapPath("~/LlavesRSA/") + "Public";
@@ -323,7 +324,7 @@ namespace Laboratorio_2.Controllers
 				}
 				else
 				{
-					ViewBag.Error = "Lo valores de 'P' y 'Q' no pueden ser menores o iguales a 0";
+					ViewBag.Error = "Lo valores de 'P' y 'Q' no pueden ser menores o iguales a 1";
 					return View();
 				}
 			}

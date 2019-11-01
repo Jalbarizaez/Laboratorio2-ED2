@@ -10,10 +10,7 @@ namespace RSA
     public class RSA
     {
         private static int bufferlenght = 1000;
-        //Para llamarla solo tenes que enviarle Fi(n) y e.  Ejemplo:
-        //Fi(n) = 20      e = 7
-        //InversoMultiplicativoMod(20, 7)
-        //eso da de resultado "d"
+
         public int E_(int fi, int n)
         {
             List<int> FI = new List<int>();
@@ -98,22 +95,22 @@ namespace RSA
             return numero_e;
         }
 
-        int modInverse(int e, int phi)
-        {
-            int i = phi, v = 0, d = 1;
-            while (e > 0)
-            {
-                int t = i / e, x = e;
-                e = i % x;
-                i = x;
-                x = d;
-                d = v - t * x;
-                v = x;
-            }
-            v %= phi;
-            if (v < 0) v = (v + phi) % phi;
-            return v;
-        }
+        //int modInverse(int e, int phi)
+        //{
+        //    int i = phi, v = 0, d = 1;
+        //    while (e > 0)
+        //    {
+        //        int t = i / e, x = e;
+        //        e = i % x;
+        //        i = x;
+        //        x = d;
+        //        d = v - t * x;
+        //        v = x;
+        //    }
+        //    v %= phi;
+        //    if (v < 0) v = (v + phi) % phi;
+        //    return v;
+        //}
         public int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
         {
             if (e2 == 1)
@@ -201,7 +198,8 @@ namespace RSA
                 }
             }
         }
-        private void CIF(string pathEscritura, string pathLlave, string pathLectura)
+
+		private void CIF(string pathEscritura, string pathLlave, string pathLectura)
         {
             string lines = File.ReadAllText(pathLlave);
             var llave = lines.Split(',');
@@ -242,12 +240,14 @@ namespace RSA
                 }
             }
         }
-        public void Llaves(int p, int q, string pathEscritura_Privada, string pathEscritura_Publica)
+
+		public void Llaves(int p, int q, string pathEscritura_Privada, string pathEscritura_Publica)
         {
             int n = p * q;
             int phi = (p - 1) * (q - 1);
             int e = E_(phi, n);
-            int d = modInverse(e, phi);
+			int d = InversoMultiplicativoMod(phi, e);
+            //int d = modInverse(e, phi);
             using (var file = new FileStream(pathEscritura_Privada, FileMode.OpenOrCreate))
             {
                 using (var writer = new BinaryWriter(file))
