@@ -96,8 +96,23 @@ namespace Laboratorio_2.Models
 
 			return numero_e;
 		}
-
-		private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
+        int modInverse(int e, int phi)
+        {
+            int i = phi, v = 0, d = 1;
+            while (e > 0)
+            {
+                int t = i / e, x = e;
+                e = i % x;
+                i = x;
+                x = d;
+                d = v - t * x;
+                v = x;
+            }
+            v %= phi;
+            if (v < 0) v = (v + phi) % phi;
+            return v;
+        }
+        private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
 		{
 			if (e2 == 1)
 			{
@@ -238,7 +253,7 @@ namespace Laboratorio_2.Models
 			int n = p * q;
 			int phi = (p - 1) * (q - 1);
 			int e = E_(phi, n);
-			int d = InversoMultiplicativoMod(phi, e);
+            int d = modInverse(e, phi);
 			using (var file = new FileStream(pathEscritura_Privada, FileMode.OpenOrCreate))
 			{
 				using (var writer = new BinaryWriter(file))
