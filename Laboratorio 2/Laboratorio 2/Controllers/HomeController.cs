@@ -250,37 +250,41 @@ namespace Laboratorio_2.Controllers
 			if (ArchivoEntrada != null && ArchivoLlave != null)
 			{
 				string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
+
+				if (nombreArchivo[1] == "txt")
+				{
+					RSA H = new RSA();
+					string path = Server.MapPath("~/ArchivosTmp/");
+					string pathRetorno = path + nombreArchivo[0];
+					path = path + ArchivoEntrada.FileName;
+					ArchivoEntrada.SaveAs(path);
+					string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+					ArchivoLlave.SaveAs(pathLlave);
+
+					H.CIF(pathRetorno, pathLlave, path);
+
+					ViewBag.Ok = "Proceso completado :)";
+					return File(pathRetorno, "rsacif", (nombreArchivo[0] + ".rsacif"));
+				}
+				else if (nombreArchivo[1] == "rsacif")
+				{
+					RSA H = new RSA();
+
+					string path = Server.MapPath("~/ArchivosTmp/");
+					string pathRetorno = path + nombreArchivo[0];
+					path = path + ArchivoEntrada.FileName;
+					ArchivoEntrada.SaveAs(path);
+					string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+					ArchivoLlave.SaveAs(pathLlave);
+
+					H.DCIF(pathRetorno, pathLlave, path);
+					ViewBag.ok = "Proceso completado :)";
+					return File(pathRetorno, "txt", (nombreArchivo[0] + ".txt"));
+				}
+
 				try
 				{
-					if (nombreArchivo[1] == "txt")
-					{
-						RSA H = new RSA();
-						string path = Server.MapPath("~/ArchivosTmp/");
-						string pathRetorno = path + nombreArchivo[0];
-						path = path + ArchivoEntrada.FileName;
-						ArchivoEntrada.SaveAs(path);
-						string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
-
-						H.CIF(path, pathLlave, pathRetorno);
-
-						ViewBag.Ok = "Proceso completado :)";
-						return File(pathRetorno, "rsacif", (nombreArchivo[0] + ".rsacif"));
-					}
-					else if (nombreArchivo[1] == "rsacif")
-					{
-						RSA H = new RSA();
-
-						string path = Server.MapPath("~/ArchivosTmp/");
-						string pathRetorno = path + nombreArchivo[0];
-						path = path + ArchivoEntrada.FileName;
-						ArchivoEntrada.SaveAs(path);
-						string pathLave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
-
-						H.DCIF(path, pathLave, pathRetorno);
-
-						ViewBag.ok = "Proceso completado :)";
-						return File(pathRetorno, "txt", (nombreArchivo[0] + ".txt"));
-					}
+					
 				}
 				catch
 				{
@@ -307,23 +311,33 @@ namespace Laboratorio_2.Controllers
 		{
 			try
 			{
-				if (P > 1 && Q > 1)
+				if (P > 0 || Q > 0)
 				{
-					BorrarArchivosDeCarpeta(Server.MapPath("~/LlavesRSA/"));
-					string pathLlavePublica = Server.MapPath("~/LlavesRSA/") + "Public";
-					string pathLlavePrivada = Server.MapPath("~/LlavesRSA/") + "Private";
-					List<string> Llaves = new List<string>();
-					Llaves.Add(pathLlavePrivada);
-					Llaves.Add(pathLlavePublica);
-
 					RSA H = new RSA();
-					H.Llaves(P, Q, pathLlavePrivada, pathLlavePublica);
-					ViewBag.Ok = "Puede Proceder a descargar las llaves";
-					return View(Llaves);
+					if (H.EsPrimo(P) && H.EsPrimo(Q))
+					{
+						if ((P * Q) < 257)
+							P = 17; Q = 19;
+						BorrarArchivosDeCarpeta(Server.MapPath("~/LlavesRSA/"));
+						string pathLlavePublica = Server.MapPath("~/LlavesRSA/") + "Public";
+						string pathLlavePrivada = Server.MapPath("~/LlavesRSA/") + "Private";
+						List<string> Llaves = new List<string>();
+						Llaves.Add(pathLlavePrivada);
+						Llaves.Add(pathLlavePublica);
+
+						H.Llaves(P, Q, pathLlavePrivada, pathLlavePublica);
+						ViewBag.Ok = "Puede Proceder a descargar las llaves";
+						return View(Llaves);
+					}
+					else
+					{
+						ViewBag.Error = "P y Q deben de ser numeros primos";
+						return View();
+					}
 				}
 				else
 				{
-					ViewBag.Error = "Lo valores de 'P' y 'Q' no pueden ser menores o iguales a 1";
+					ViewBag.Error = "Los valores de 'P' y 'Q' no pueden ser menores o iguales a 0";
 					return View();
 				}
 			}

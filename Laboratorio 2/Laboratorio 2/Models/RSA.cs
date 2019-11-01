@@ -10,7 +10,6 @@ namespace Laboratorio_2.Models
 {
 	public class RSA
 	{
-		//e Fi
 		private static int bufferlenght = 1000;
 
 		private int E_(int fi, int n)
@@ -96,7 +95,8 @@ namespace Laboratorio_2.Models
 
 			return numero_e;
 		}
-        int modInverse(int e, int phi)
+
+		private int modInverso(int e, int phi)
         {
             int i = phi, v = 0, d = 1;
             while (e > 0)
@@ -112,7 +112,8 @@ namespace Laboratorio_2.Models
             if (v < 0) v = (v + phi) % phi;
             return v;
         }
-        private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
+
+		private int InversoMultiplicativoMod(int Fi, int e, int e2 = 0, int num = 0, int num2 = 1)
 		{
 			if (e2 == 1)
 			{
@@ -144,6 +145,22 @@ namespace Laboratorio_2.Models
 
 				return InversoMultiplicativoMod(Fi, e, e2, num, num2);
 			}
+		}
+
+		public bool EsPrimo(int n)
+		{
+			bool EsPrimo = true;
+			for (int i = 2; i <= (n / 2); i++)
+			{
+				if (n % i != 0)
+				{ }
+				else
+				{
+					EsPrimo = false;
+					break;
+				}
+			}
+			return EsPrimo;
 		}
 
 		public void DCIF(string pathEscritura, string pathLlave, string pathLectura)
@@ -182,7 +199,7 @@ namespace Laboratorio_2.Models
 
 										BigInteger resultado = BigInteger.ModPow(Convert.ToInt32(bits, 2), Convert.ToInt32(llave[0]), Convert.ToInt32(llave[1]));
 										var byt = Convert.ToString((int)(resultado), 2);
-										escribir.Add(Convert.ToByte(byt, 2));
+										try { escribir.Add(Convert.ToByte(byt, 2));} catch { }
 										bits = "";
 										string leido = Convert.ToString(item, 2);
 										string completos = leido.PadLeft(8, '0');
@@ -197,7 +214,7 @@ namespace Laboratorio_2.Models
 							}
 							BigInteger resultado_ = BigInteger.ModPow(Convert.ToInt32(bits, 2), Convert.ToInt32(llave[0]), Convert.ToInt32(llave[1]));
 							var byt_ = Convert.ToString((int)(resultado_), 2);
-							escribir.Add(Convert.ToByte(byt_, 2));
+							try { escribir.Add(Convert.ToByte(byt_, 2)); } catch{ }
 							writer.Write(escribir.ToArray(), 0, escribir.Count);
 						}
 
@@ -253,7 +270,7 @@ namespace Laboratorio_2.Models
 			int n = p * q;
 			int phi = (p - 1) * (q - 1);
 			int e = E_(phi, n);
-            int d = modInverse(e, phi);
+            int d = modInverso(e, phi);
 			using (var file = new FileStream(pathEscritura_Privada, FileMode.OpenOrCreate))
 			{
 				using (var writer = new BinaryWriter(file))
