@@ -249,42 +249,40 @@ namespace Laboratorio_2.Controllers
 			BorrarArchivosDeCarpeta(Server.MapPath("~/ArchivosTmp/"));
 			if (ArchivoEntrada != null && ArchivoLlave != null)
 			{
-				string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
-
-				if (nombreArchivo[1] == "txt")
-				{
-					RSA H = new RSA();
-					string path = Server.MapPath("~/ArchivosTmp/");
-					string pathRetorno = path + nombreArchivo[0];
-					path = path + ArchivoEntrada.FileName;
-					ArchivoEntrada.SaveAs(path);
-					string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
-					ArchivoLlave.SaveAs(pathLlave);
-
-					H.CIF(pathRetorno, pathLlave, path);
-
-					ViewBag.Ok = "Proceso completado :)";
-					return File(pathRetorno, "rsacif", (nombreArchivo[0] + ".rsacif"));
-				}
-				else if (nombreArchivo[1] == "rsacif")
-				{
-					RSA H = new RSA();
-
-					string path = Server.MapPath("~/ArchivosTmp/");
-					string pathRetorno = path + nombreArchivo[0];
-					path = path + ArchivoEntrada.FileName;
-					ArchivoEntrada.SaveAs(path);
-					string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
-					ArchivoLlave.SaveAs(pathLlave);
-
-					H.DCIF(pathRetorno, pathLlave, path);
-					ViewBag.ok = "Proceso completado :)";
-					return File(pathRetorno, "txt", (nombreArchivo[0] + ".txt"));
-				}
-
 				try
 				{
-					
+					string[] nombreArchivo = ArchivoEntrada.FileName.Split('.');
+
+					if (nombreArchivo[1] == "txt")
+					{
+						RSA H = new RSA();
+						string path = Server.MapPath("~/ArchivosTmp/");
+						string pathRetorno = path + nombreArchivo[0];
+						path = path + ArchivoEntrada.FileName;
+						ArchivoEntrada.SaveAs(path);
+						string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+						ArchivoLlave.SaveAs(pathLlave);
+
+						H.CIF(pathRetorno, pathLlave, path);
+
+						ViewBag.Ok = "Proceso completado :)";
+						return File(pathRetorno, "rsacif", (nombreArchivo[0] + ".rsacif"));
+					}
+					else if (nombreArchivo[1] == "rsacif")
+					{
+						RSA H = new RSA();
+
+						string path = Server.MapPath("~/ArchivosTmp/");
+						string pathRetorno = path + nombreArchivo[0];
+						path = path + ArchivoEntrada.FileName;
+						ArchivoEntrada.SaveAs(path);
+						string pathLlave = Server.MapPath("~/ArchivosTmp/") + ArchivoLlave.FileName;
+						ArchivoLlave.SaveAs(pathLlave);
+
+						H.DCIF(pathRetorno, pathLlave, path);
+						ViewBag.ok = "Proceso completado :)";
+						return File(pathRetorno, "txt", (nombreArchivo[0] + ".txt"));
+					}
 				}
 				catch
 				{
